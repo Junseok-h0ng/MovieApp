@@ -11,7 +11,7 @@ function LandingPage() {
     const [CurrentPage, setCurrentPage] = useState(0)
 
     useEffect(() => {
-        const endPoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en_us&page=1`;
+        const endPoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en_us&page=1  `;
         fetchMovies(endPoint)
     }, [])
 
@@ -34,7 +34,8 @@ function LandingPage() {
     return (
         <div style={{ width: '100%', margin: '0' }}>
             {MainMovieImage &&
-                <MainImage image={`${IMAGE_BASE_URL}w1280${MainMovieImage.backdrop_path}`}
+                <MainImage
+                    image={`${IMAGE_BASE_URL}w1280${MainMovieImage.backdrop_path}`}
                     title={MainMovieImage.title}
                     text={MainMovieImage.overview}
                 />
@@ -47,6 +48,7 @@ function LandingPage() {
                     {Movies && Movies.map((movie, index) => (
                         <React.Fragment key={index}>
                             <GridCards
+                                landingPage
                                 image={movie.poster_path ?
                                     `${IMAGE_BASE_URL}w500${movie.poster_path}` : null}
                                 movieID={movie.id}
