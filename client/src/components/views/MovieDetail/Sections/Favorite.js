@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { Button } from 'antd';
 
 function Favorite(props) {
 
@@ -14,8 +15,38 @@ function Favorite(props) {
 
     let variable = {
         userFrom: userFrom,
-        movieId: movieId
+        movieId: movieId,
+        movieTitle: movieTitle,
+        moviePost: moviePost,
+        movieRunTime: movieRunTime
     }
+
+    const onClickFavorite = () => {
+
+        if (Favorited) {
+            axios.post('/api/favorite/removeFromFavorite', variable)
+                .then(res => {
+                    if (res.data.success) {
+                        setFavoriteNumber(FavoriteNumber - 1)
+                        setFavorited(!Favorited)
+                    } else {
+                        alert('Favorite 리스트에서 지우는 걸 실패 했습니다.')
+                    }
+                })
+        } else {
+            axios.post('/api/favorite/addFavorite', variable)
+                .then(res => {
+                    if (res.data.success) {
+                        setFavoriteNumber(FavoriteNumber + 1)
+                        setFavorited(!Favorited)
+                    } else {
+                        alert('Favorite 리스트에 추가하는 걸 실패 했습니다.')
+                    }
+                })
+        }
+
+    }
+
     useEffect(() => {
         axios.post('/api/favorite/favoriteNumber', variable)
             .then(res => {
@@ -39,7 +70,7 @@ function Favorite(props) {
 
     return (
         <div>
-            <button>{Favorited ? "Not Favorite" : "Add to Favorite "}{FavoriteNumber}</button>
+            <Button onClick={onClickFavorite}>{Favorited ? "Not Favorite " : "Add to Favorite "}{FavoriteNumber}</Button>
         </div>
     )
 }
