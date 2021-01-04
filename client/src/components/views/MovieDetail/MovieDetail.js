@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { API_URL, API_KEY, IMAGE_BASE_URL } from '../../Config'
 import { Row } from 'antd'
+import { useSelector } from 'react-redux'
 
 import MainImage from '../LandingPage/Sections/MainImage'
 import MovieInfo from './Sections/MovieInfo'
 import GridCards from '../commons/GridCards'
 import Favorite from './Sections/Favorite'
+import Comment from './Sections/Comment'
+import Axios from 'axios'
 
 function MovieDetail(props) {
-
+    const user = useSelector(state => state.user.userData)
     let movieId = props.match.params.movieId
 
     const [Movie, setMovie] = useState([])
     const [Casts, setCasts] = useState([])
     const [ActorToggle, setActorToggle] = useState(false)
+
+    const [Comments, setComments] = useState([])
+
+
+    const variable = { movieId: movieId }
 
     useEffect(() => {
 
@@ -29,16 +37,32 @@ function MovieDetail(props) {
         fetch(endPointCrew)
             .then(res => res.json())
             .then(res => {
-                console.log(res.cast)
                 setCasts(res.cast)
             })
+        Axios.post('/api/comment/getComments', variable)
+            .then(res => {
+                if (res.data.success) {
+                    setComments(res.data.comments);
+
+                } else {
+                    alert("코멘트 정보를 가져오는 것을 실패 했습니다.")
+                }
+            })
+
     }, [])
+
 
     const toggleActorView = () => {
         setActorToggle(!ActorToggle)
     }
 
+    const refreshFunction = (newComment) => {
+        setComments(Comments.concat(newComment))
+    }
+
     return (
+
+
         <div>
             {/* Header */}
             {Movie &&
@@ -80,7 +104,7 @@ function MovieDetail(props) {
 
                     </Row>
                 }
-
+                <Comment movieId={movieId} commentLists={Comments} refreshFunction={refreshFunction} />
             </div>
         </div >
     )
