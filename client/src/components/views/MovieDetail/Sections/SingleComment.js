@@ -19,7 +19,7 @@ function SingleComment(props) {
 
         let variable = {
             movieId: props.movieId,
-            comment: Comment,
+            comment: CommentValue,
             writer: user._id,
             responseTo: props.comment._id
         }
@@ -29,6 +29,7 @@ function SingleComment(props) {
                 if (res.data.success) {
                     props.refreshFunction(res.data.result);
                     setCommentValue("");
+                    setOpenReply(!OpenReply)
                 } else {
                     alert('코멘트 저장이 실패했습니다.')
                 }
@@ -55,7 +56,7 @@ function SingleComment(props) {
                     <textarea
                         style={{ width: '100%', borderRadius: '5px' }}
                         onChange={onChangeComment}
-                        value={Comment}
+                        value={CommentValue}
                         placeholder="코멘트를 작성해 주세요"
                     />
                     <br />

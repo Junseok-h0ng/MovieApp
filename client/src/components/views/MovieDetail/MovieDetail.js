@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { API_URL, API_KEY, IMAGE_BASE_URL } from '../../Config'
-import { Row } from 'antd'
+import { Row, Button, List } from 'antd'
 import { useSelector } from 'react-redux'
 
 import MainImage from '../LandingPage/Sections/MainImage'
@@ -9,9 +9,10 @@ import GridCards from '../commons/GridCards'
 import Favorite from './Sections/Favorite'
 import Comment from './Sections/Comment'
 import Axios from 'axios'
+import LikeDislike from './Sections/LikeDislike.js'
 
 function MovieDetail(props) {
-    const user = useSelector(state => state.user.userData)
+    const user = useSelector(state => state.user)
     let movieId = props.match.params.movieId
 
     const [Movie, setMovie] = useState([])
@@ -43,7 +44,6 @@ function MovieDetail(props) {
             .then(res => {
                 if (res.data.success) {
                     setComments(res.data.comments);
-
                 } else {
                     alert("코멘트 정보를 가져오는 것을 실패 했습니다.")
                 }
@@ -57,6 +57,7 @@ function MovieDetail(props) {
     }
 
     const refreshFunction = (newComment) => {
+        console.log(newComment)
         setComments(Comments.concat(newComment))
     }
 
@@ -86,8 +87,13 @@ function MovieDetail(props) {
 
                 <br />
                 {/* Actors Grid */}
+                <div style={{ display: 'flex', justifyContent: 'center' }}>                   <LikeDislike />
+                </div>
+
+
+
                 <div style={{ display: 'flex', justifyContent: 'center', margin: '2rem' }}>
-                    <button onClick={toggleActorView}>Toggle Actor View</button>
+                    <Button onClick={toggleActorView}>Toggle Actor View</Button>
                 </div>
                 {ActorToggle &&
                     <Row gutter={[16, 16]}>

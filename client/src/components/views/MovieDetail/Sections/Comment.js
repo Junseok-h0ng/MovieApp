@@ -8,6 +8,8 @@ import ReplyComment from './ReplyComment'
 
 function Comment(props) {
     const user = useSelector(state => state.user.userData)
+    const movieId = props.movieId
+
     const [CommentValue, setCommentValue] = useState("")
 
     const onChangeComment = (e) => {
@@ -17,7 +19,7 @@ function Comment(props) {
         e.preventDefault()
 
         let variable = {
-            movieId: props.movieId,
+            movieId: movieId,
             comment: CommentValue,
             writer: user._id
         }
@@ -25,7 +27,6 @@ function Comment(props) {
         Axios.post('/api/comment/saveComment', variable)
             .then(res => {
                 if (res.data.success) {
-                    console.log(res.data.result)
                     props.refreshFunction(res.data.result);
                     setCommentValue("")
                 } else {
@@ -46,12 +47,12 @@ function Comment(props) {
             <hr />
             {/* 코멘트 출력 */}
             {props.commentLists && props.commentLists.map((comment, index) => (
-                // (!comment.responseTo &&
-                <React.Fragment>
-                    <SingleComment refreshFunction={props.refreshFunction} comment={comment} />
-                    <ReplyComment />
-                </React.Fragment>
-                // )
+                (!comment.responseTo &&
+                    <React.Fragment>
+                        <SingleComment refreshFunction={props.refreshFunction} comment={comment} movieId={movieId} />
+                        <ReplyComment refreshFunction={props.refreshFunction} parentCommentId={comment._id} commentLists={props.commentLists} user={user} movieId={props.movieId} comment={comment} />
+                    </React.Fragment>
+                )
             ))}
 
             {/* 코멘트 입력 */}

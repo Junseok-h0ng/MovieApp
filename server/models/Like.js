@@ -1,0 +1,21 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const LikeSchema = mongoose.Schema({
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    commentId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+    }, movieID: {
+        type: String
+    }
+
+
+}, { timestamps: true })
+
+const Like = mongoose.model('Likes', LikeSchema);
+
+module.exports = { Like }
