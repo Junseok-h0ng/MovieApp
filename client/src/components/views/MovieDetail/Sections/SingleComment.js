@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Comment, Avatar } from 'antd'
 import { useSelector } from 'react-redux'
 import Axios from 'axios'
+import LikeDislikes from './LikeDislike'
 
 function SingleComment(props) {
 
@@ -38,9 +39,9 @@ function SingleComment(props) {
     const onClickReplyOpen = () => {
         setOpenReply(!OpenReply)
     }
-
     const actions = [
-        <span onClick={onClickReplyOpen}>Reply to</span>
+        <LikeDislikes commentId={props.comment._id} />,
+        < span style={{ marginLeft: '1rem' }} onClick={onClickReplyOpen} > Reply to</span >
     ]
 
     return (

@@ -87,7 +87,8 @@ function MovieDetail(props) {
 
                 <br />
                 {/* Actors Grid */}
-                <div style={{ display: 'flex', justifyContent: 'center' }}>                   <LikeDislike />
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <LikeDislike movieId={movieId} />
                 </div>
 
 

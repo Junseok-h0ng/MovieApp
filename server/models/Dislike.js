@@ -9,7 +9,7 @@ const DislikeSchema = mongoose.Schema({
     commentId: {
         type: Schema.Types.ObjectId,
         ref: 'Comment'
-    }, movieID: {
+    }, movieId: {
         type: String
     }
 
